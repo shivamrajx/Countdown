@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to JEE MAINS 2026 SHIFT-01</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .flip-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            border-radius: 10px;
+        }
+        .flip-card-front {
+            background-color: #fff;
+            color: #333;
+        }
+        .flip-card-back {
+            background-color: #333;
+            color: #fff;
+            transform: rotateX(180deg);
+        }
+        .flipping .flip-card-inner {
+            transform: rotateX(180deg);
+        }
+        .label {
+            margin-top: 5px;
+            text-align: center;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>JEE MAINS 2026 SHIFT-01</h1>
+    <div class="countdown">
+        <div class="flip-card" id="years">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Years</div>
+        </div>
+        <div class="flip-card" id="months">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Months</div>
+        </div>
+        <div class="flip-card" id="days">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Days</div>
+        </div>
+        <div class="flip-card" id="hours">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Hours</div>
+        </div>
+        <div class="flip-card" id="minutes">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Minutes</div>
+        </div>
+        <div class="flip-card" id="seconds">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">0</div>
+                <div class="flip-card-back">0</div>
+            </div>
+            <div class="label">Seconds</div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(element, newValue) {
+            const flipCardInner = element.querySelector('.flip-card-inner');
+            const front = element.querySelector('.flip-card-front');
+            const back = element.querySelector('.flip-card-back');
+            const currentValue = front.innerText;
+
+            if (currentValue !== newValue) {
+                back.innerText = newValue;
+                flipCardInner.classList.add('flipping');
+                
+                setTimeout(() => {
+                    front.innerText = newValue;
+                    flipCardInner.classList.remove('flipping');
+                }, 600); // Match this with CSS transition duration
+            }
+        }
+
+        function countdown() {
+            const eventDate = new Date("Jan 1, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const timeLeft = eventDate - now;
+
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".countdown").innerHTML = "Event Started";
+                return;
+            }
+
+            const nowDate = new Date();
+            const eventDateObject = new Date("Jan 1, 2026 00:00:00");
+
+            let years = eventDateObject.getFullYear() - nowDate.getFullYear();
+            let months = eventDateObject.getMonth() - nowDate.getMonth();
+            let days = eventDateObject.getDate() - nowDate.getDate();
+            let hours = eventDateObject.getHours() - nowDate.getHours();
+            let minutes = eventDateObject.getMinutes() - nowDate.getMinutes();
+            let seconds = eventDateObject.getSeconds() - nowDate.getSeconds();
+
+            if (seconds < 0) {
+                seconds += 60;
+                minutes--;
+            }
+
+            if (minutes < 0) {
+                minutes += 60;
+                hours--;
+            }
+
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+
+            if (days < 0) {
+                const lastMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate();
+                days += lastMonth;
+                months--;
+            }
+
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            flipCard(document.getElementById('years'), years);
+            flipCard(document.getElementById('months'), months);
+            flipCard(document.getElementById('days'), days);
+            flipCard(document.getElementById('hours'), hours);
+            flipCard(document.getElementById('minutes'), minutes);
+            flipCard(document.getElementById('seconds'), seconds);
+        }
+
+        const countdownInterval = setInterval(countdown, 1000); // Update every second
+        countdown(); // Initial call
+    </script>
+
+</body>
+</html>
